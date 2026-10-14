@@ -18,7 +18,7 @@ function CouponForm() {
 
   if (coupon) {
     return (
-      <div className="flex items-center justify-between gap-3 border-t border-[#d5d8dd] pt-5">
+      <div className="flex items-center justify-between gap-3 border-t border-line-strong pt-5">
         <span>
           Código <strong>{coupon}</strong> aplicado
         </span>
@@ -42,7 +42,7 @@ function CouponForm() {
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-2 border-t border-[#d5d8dd] pt-5">
+    <form onSubmit={submit} className="flex flex-col gap-2 border-t border-line-strong pt-5">
       <div className="flex gap-2">
         <label htmlFor="cupon" className="sr-only">
           Código de descuento
@@ -51,6 +51,7 @@ function CouponForm() {
           id="cupon"
           type="text"
           placeholder="Código de descuento"
+          autoComplete="off"
           value={code}
           onChange={(event) => {
             setCode(event.target.value)
@@ -102,6 +103,7 @@ export default function CartPage() {
 
   return (
     <>
+      <title>Carrito · Nido</title>
       <Stepper current={0} />
       <div className="flex flex-wrap items-start gap-x-[clamp(32px,5vw,72px)] gap-y-10">
         <section className="flex min-w-0 flex-[3_1_480px] flex-col gap-6">
@@ -110,7 +112,7 @@ export default function CartPage() {
             {lines.map((line) => (
               <li key={`${line.productId}-${line.color}`} className="flex gap-4 border-b border-line py-5">
                 <Link to={`/producto/${line.productId}`} tabIndex={-1} aria-hidden="true" className="shrink-0">
-                  <ProductImage product={line.product} className="h-30 w-24 rounded-[10px] text-[11px]" />
+                  <ProductImage product={line.product} color={line.color} className="h-30 w-24 rounded-[10px]" />
                 </Link>
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                   <div className="flex items-baseline justify-between gap-3">

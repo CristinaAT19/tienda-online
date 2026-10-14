@@ -17,6 +17,7 @@ export function productBadge(product: Product): string | null {
 export default function ProductCard({ product }: { product: Product }) {
   const add = useCart((state) => state.add)
   const [added, setAdded] = useState(false)
+  const [color, setColor] = useState(product.colors[0].name)
   const badge = productBadge(product)
   const href = `/producto/${product.id}`
 
@@ -31,6 +32,7 @@ export default function ProductCard({ product }: { product: Product }) {
       <Link to={href} tabIndex={-1} aria-hidden="true" className="group relative block overflow-hidden rounded-[14px]">
         <ProductImage
           product={product}
+          color={color}
           className="aspect-[4/5] w-full transition-transform duration-300 group-hover:scale-[1.03]"
         />
         {badge && (
@@ -55,11 +57,34 @@ export default function ProductCard({ product }: { product: Product }) {
             <span className="text-base font-semibold">{formatPrice(product.price)}</span>
           </span>
         </div>
+        {product.colors.length > 1 && (
+          <div role="group" aria-label={`Colores de ${product.name}`} className="-ml-1.5 flex flex-wrap pt-1.5">
+            {product.colors.map((option) => (
+              <button
+                key={option.name}
+                type="button"
+                title={option.name}
+                aria-label={option.name}
+                aria-pressed={option.name === color}
+                onClick={() => setColor(option.name)}
+                className="group inline-flex size-8 items-center justify-center rounded-full"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`size-4.5 rounded-full border border-ink/15 ring-offset-2 ${
+                    option.name === color ? 'ring-1 ring-ink' : 'group-hover:ring-1 group-hover:ring-line-strong'
+                  }`}
+                  style={{ backgroundColor: option.hex }}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <button
         type="button"
         onClick={() => {
-          add(product.id, product.colors[0].name)
+          add(product.id, color)
           setAdded(true)
         }}
         className="btn-outline"

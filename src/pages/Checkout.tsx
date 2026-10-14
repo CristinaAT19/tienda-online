@@ -94,7 +94,7 @@ function ShippingStep({
         <Field
           id="direccion"
           label="Dirección"
-          placeholder="Calle, número, piso"
+          placeholder="Calle, número, departamento"
           autoComplete="street-address"
           error={errors.direccion?.message}
           {...register('direccion')}
@@ -218,7 +218,7 @@ function PaymentStep({
         <div className="flex flex-wrap items-start gap-4">
           <Field
             id="caducidad"
-            label="Caducidad"
+            label="Vencimiento"
             inputMode="numeric"
             autoComplete="off"
             placeholder="MM/AA"
@@ -246,7 +246,7 @@ function PaymentStep({
           Volver al envío
         </button>
         <button type="submit" disabled={isSubmitting} className="btn-primary">
-          Pagar {formatPrice(total)}
+          {isSubmitting ? 'Procesando el pago…' : `Pagar ${formatPrice(total)}`}
         </button>
       </div>
     </form>
@@ -308,13 +308,10 @@ function Confirmation({ order }: { order: Order }) {
 
 function OrderLines({ lines }: { lines: CartLine[] }) {
   return (
-    <ul className="flex flex-col gap-4 border-t border-[#d5d8dd] pt-5">
+    <ul className="flex flex-col gap-4 border-t border-line-strong pt-5">
       {lines.map((line) => (
         <li key={`${line.productId}-${line.color}`} className="flex gap-3.5">
-          <ProductImage
-            product={line.product}
-            className="h-20 w-16 shrink-0 rounded-[10px] bg-white! p-1.5! text-[10px]!"
-          />
+          <ProductImage product={line.product} color={line.color} className="h-20 w-16 shrink-0 rounded-[10px]" />
           <div className="flex min-w-0 flex-1 flex-col gap-1">
             <div className="flex items-baseline justify-between gap-3">
               <span className="font-semibold">{line.product.name}</span>
@@ -357,6 +354,7 @@ export default function Checkout() {
   if (order) {
     return (
       <>
+        <title>Pedido confirmado · Nido</title>
         <Stepper current={3} />
         <Confirmation order={order} />
       </>
@@ -378,7 +376,9 @@ export default function Checkout() {
   const totals = computeTotals(lines, method, coupon)
   const units = lines.reduce((sum, line) => sum + line.qty, 0)
 
-  function placeOrder() {
+  async function placeOrder() {
+    // Simula la espera de la pasarela de pago
+    await new Promise((resolve) => setTimeout(resolve, 1200))
     setOrder({
       number: `NID-${Math.floor(100000 + Math.random() * 900000)}`,
       shipping,
@@ -391,6 +391,7 @@ export default function Checkout() {
 
   return (
     <>
+      <title>{step === 'envio' ? 'Envío · Nido' : 'Pago · Nido'}</title>
       <Stepper current={step === 'envio' ? 1 : 2} />
       <div className="flex flex-wrap items-start gap-x-[clamp(32px,5vw,72px)] gap-y-10">
         <div className="min-w-0 flex-[3_1_480px]">
@@ -420,7 +421,7 @@ export default function Checkout() {
             </span>
           </div>
           <OrderLines lines={lines} />
-          <div className="border-t border-[#d5d8dd] pt-5">
+          <div className="border-t border-line-strong pt-5">
             <TotalsList totals={totals} method={method} coupon={coupon} />
           </div>
           <p className="flex items-start gap-2 text-[13px] text-muted">

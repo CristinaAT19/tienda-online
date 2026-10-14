@@ -25,7 +25,7 @@ export default function TotalsList({ totals, method, coupon }: Props) {
         <dt className="text-muted">Envío {SHIPPING[method].name.toLowerCase()}</dt>
         <dd>{totals.shipping === 0 ? 'Gratis' : formatPrice(totals.shipping)}</dd>
       </div>
-      <div className="flex items-baseline justify-between gap-3 border-t border-[#d5d8dd] pt-3.5">
+      <div className="flex items-baseline justify-between gap-3 border-t border-line-strong pt-3.5">
         <dt className="text-[17px] font-semibold">Total</dt>
         <dd className="text-[26px] font-bold tracking-[-0.02em]">{formatPrice(totals.total)}</dd>
       </div>

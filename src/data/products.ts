@@ -24,6 +24,7 @@ export const products: Product[] = [
       { name: 'Gris humo', hex: '#8b9097' },
       { name: 'Azul noche', hex: '#233252' },
     ],
+    art: 'taza',
     addedAt: 8,
   },
   {
@@ -39,6 +40,7 @@ export const products: Product[] = [
       { name: 'Transparente', hex: '#e6ecee' },
       { name: 'Verde botella', hex: '#4f6b5a' },
     ],
+    art: 'jarron',
     addedAt: 3,
   },
   {
@@ -54,6 +56,7 @@ export const products: Product[] = [
       { name: 'Natural', hex: '#d8cfc0' },
       { name: 'Gris piedra', hex: '#9a9c9e' },
     ],
+    art: 'manta',
     addedAt: 5,
   },
   {
@@ -70,6 +73,7 @@ export const products: Product[] = [
       { name: 'Negro mate', hex: '#22252a' },
       { name: 'Blanco roto', hex: '#ecebe6' },
     ],
+    art: 'lampara',
     addedAt: 7,
   },
   {
@@ -82,6 +86,7 @@ export const products: Product[] = [
     details: 'Madera de olivo. 22 cm de diámetro y 7 cm de alto.',
     care: 'Lavar a mano y secar al momento. Hidratar con aceite de vez en cuando.',
     colors: [{ name: 'Olivo natural', hex: '#b08d5b' }],
+    art: 'cuenco',
     addedAt: 2,
   },
   {
@@ -99,6 +104,7 @@ export const products: Product[] = [
       { name: 'Salvia', hex: '#9aa791' },
       { name: 'Tinta', hex: '#2c3442' },
     ],
+    art: 'cojin',
     addedAt: 4,
   },
   {
@@ -114,6 +120,7 @@ export const products: Product[] = [
       { name: 'Blanco', hex: '#f0eeea' },
       { name: 'Gris humo', hex: '#8b9097' },
     ],
+    art: 'portavelas',
     addedAt: 6,
   },
   {
@@ -129,6 +136,7 @@ export const products: Product[] = [
       { name: 'Arena', hex: '#d9cdb8' },
       { name: 'Azul noche', hex: '#233252' },
     ],
+    art: 'platos',
     addedAt: 1,
   },
 ]

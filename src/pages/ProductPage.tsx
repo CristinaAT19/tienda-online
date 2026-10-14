@@ -10,7 +10,15 @@ import { useCart } from '../store/cart'
 import type { Product } from '../types'
 import NotFound from './NotFound'
 
-function Gallery({ product }: { product: Product }) {
+function Gallery({
+  product,
+  color,
+  onColorChange,
+}: {
+  product: Product
+  color: string
+  onColorChange: (color: string) => void
+}) {
   const [active, setActive] = useState(0)
   const images = product.images ?? []
   const badge = productBadge(product)
@@ -18,14 +26,14 @@ function Gallery({ product }: { product: Product }) {
   return (
     <div className="flex min-w-0 flex-[3_1_460px] flex-col gap-3">
       <div className="relative overflow-hidden rounded-[18px]">
-        <ProductImage product={product} index={active} className="aspect-[4/3] w-full" />
+        <ProductImage product={product} color={color} index={active} className="aspect-[4/3] w-full" />
         {badge && (
           <span className="absolute top-4 left-4 rounded-full bg-white px-3 py-1.5 text-xs font-semibold">
             {badge}
           </span>
         )}
       </div>
-      {images.length > 1 && (
+      {images.length > 1 ? (
         <div role="group" aria-label="Más fotos" className="grid grid-cols-4 gap-3">
           {images.map((src, i) => (
             <button
@@ -40,14 +48,41 @@ function Gallery({ product }: { product: Product }) {
             </button>
           ))}
         </div>
+      ) : (
+        product.colors.length > 1 &&
+        !images.length && (
+          <div role="group" aria-label="Ver en otros colores" className="grid grid-cols-4 gap-3">
+            {product.colors.map((option) => (
+              <button
+                key={option.name}
+                type="button"
+                aria-label={`Ver en ${option.name.toLowerCase()}`}
+                aria-pressed={option.name === color}
+                onClick={() => onColorChange(option.name)}
+                className={`overflow-hidden rounded-xl border-2 ${
+                  option.name === color ? 'border-ink' : 'border-transparent hover:border-line-strong'
+                }`}
+              >
+                <ProductImage product={product} color={option.name} className="aspect-square w-full" />
+              </button>
+            ))}
+          </div>
+        )
       )}
     </div>
   )
 }
 
-function ProductInfo({ product }: { product: Product }) {
+function ProductInfo({
+  product,
+  color,
+  onColorChange,
+}: {
+  product: Product
+  color: string
+  onColorChange: (color: string) => void
+}) {
   const add = useCart((state) => state.add)
-  const [color, setColor] = useState(product.colors[0].name)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
 
@@ -90,7 +125,7 @@ function ProductInfo({ product }: { product: Product }) {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => {
-                  setColor(option.name)
+                  onColorChange(option.name)
                   setAdded(false)
                 }}
                 className={`inline-flex min-h-11 items-center gap-2.5 rounded-full border-2 pr-4 pl-2.5 ${
@@ -161,6 +196,16 @@ function ProductInfo({ product }: { product: Product }) {
   )
 }
 
+function ProductDetail({ product }: { product: Product }) {
+  const [color, setColor] = useState(product.colors[0].name)
+  return (
+    <div className="flex flex-wrap items-start gap-x-[clamp(32px,5vw,72px)] gap-y-8">
+      <Gallery product={product} color={color} onColorChange={setColor} />
+      <ProductInfo product={product} color={color} onColorChange={setColor} />
+    </div>
+  )
+}
+
 export default function ProductPage() {
   const { id = '' } = useParams()
   const product = getProduct(id)
@@ -174,6 +219,8 @@ export default function ProductPage() {
 
   return (
     <>
+      <title>{`${product.name} · Nido`}</title>
+      <meta name="description" content={product.description} />
       <nav aria-label="Ruta de navegación" className="flex flex-wrap items-center gap-x-2 py-3 text-sm text-muted">
         <Link to="/" className="inline-flex min-h-11 items-center hover:text-ink">
           Inicio
@@ -189,10 +236,7 @@ export default function ProductPage() {
       </nav>
 
       {/* key: reinicia color, cantidad y foto al cambiar de producto */}
-      <div key={product.id} className="flex flex-wrap items-start gap-x-[clamp(32px,5vw,72px)] gap-y-8">
-        <Gallery product={product} />
-        <ProductInfo product={product} />
-      </div>
+      <ProductDetail key={product.id} product={product} />
 
       <section className="flex flex-col gap-7 pt-[clamp(56px,7vw,96px)]">
         <h2 className="text-[clamp(22px,2.4vw,28px)] font-bold tracking-[-0.03em]">También te puede gustar</h2>

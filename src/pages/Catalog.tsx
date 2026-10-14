@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ArrowRightIcon } from '../components/Icons'
+import { ArtGroup } from '../components/ProductArt'
 import ProductCard from '../components/ProductCard'
 import { CATEGORY_NAMES, products } from '../data/products'
 import { CATEGORIES, type Category, type Product } from '../types'
@@ -19,6 +20,27 @@ const normalize = (text: string) =>
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
 
+/** Bodegón con varias piezas del catálogo sobre una repisa. */
+function HeroScene() {
+  return (
+    <svg
+      role="img"
+      aria-label="Lámpara, jarrón con ramas, taza y cuenco de la colección sobre una repisa"
+      viewBox="0 0 600 460"
+      preserveAspectRatio="xMidYMax slice"
+      className="size-full"
+    >
+      <circle cx="330" cy="130" r="80" fill="#f3e7cf" />
+      <rect x="-200" y="380" width="1000" height="100" fill="#d9cfbf" />
+      <rect x="-200" y="380" width="1000" height="6" fill="#000" opacity="0.06" />
+      <ArtGroup kind="lampara" color="#22252a" transform="translate(-40 121) scale(0.82)" />
+      <ArtGroup kind="jarron" color="#4f6b5a" transform="translate(110 96) scale(0.9)" />
+      <ArtGroup kind="cuenco" color="#b08d5b" transform="translate(395 206) scale(0.55)" />
+      <ArtGroup kind="taza" color="#233252" transform="translate(318 247) scale(0.42)" />
+    </svg>
+  )
+}
+
 function Hero() {
   return (
     <section className="mt-6 flex flex-wrap overflow-hidden rounded-[20px] bg-tint">
@@ -35,11 +57,8 @@ function Hero() {
           <ArrowRightIcon />
         </a>
       </div>
-      <div
-        aria-hidden="true"
-        className="flex min-h-80 min-w-0 flex-[1_1_420px] items-center justify-center bg-tint-strong p-6 text-center text-[13px] text-muted"
-      >
-        Foto de portada pendiente
+      <div className="flex min-h-80 min-w-0 flex-[1_1_420px] bg-[#e9e3d8]">
+        <HeroScene />
       </div>
     </section>
   )
@@ -79,6 +98,7 @@ export default function Catalog() {
 
   return (
     <>
+      <title>{category ? `${CATEGORY_NAMES[category]} · Nido` : 'Nido · Objetos para casa'}</title>
       {!query && <Hero />}
 
       <section id="productos" className="flex scroll-mt-6 flex-col gap-7 pt-[clamp(48px,6vw,80px)]">

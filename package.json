@@ -1,7 +1,8 @@
 {
   "name": "tienda",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Tienda online de demostración: catálogo, carrito y checkout con React, TypeScript y Tailwind CSS",
   "type": "module",
   "scripts": {
     "dev": "vite",

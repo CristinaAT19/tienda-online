@@ -1,6 +1,8 @@
 export const CATEGORIES = ['cocina', 'decoracion', 'textiles', 'iluminacion'] as const
 export type Category = (typeof CATEGORIES)[number]
 
+export type ArtKind = 'taza' | 'jarron' | 'manta' | 'lampara' | 'cuenco' | 'cojin' | 'portavelas' | 'platos'
+
 export interface ProductColor {
   name: string
   hex: string
@@ -19,7 +21,9 @@ export interface Product {
   details: string
   care: string
   colors: ProductColor[]
-  /** Rutas a las fotos reales; sin ellas se muestra un marcador de color */
+  /** Ilustración que se usa cuando el producto no tiene fotos */
+  art: ArtKind
+  /** Rutas a fotos reales; si existen, sustituyen a la ilustración */
   images?: string[]
   /** Posición en el orden «Novedades» (mayor = más reciente) */
   addedAt: number
